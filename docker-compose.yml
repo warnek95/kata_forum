@@ -1,0 +1,35 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    env_file:
+     - ./docker-compose.env
+
+  backend:
+    image: sgforum/backend
+    restart: always
+    networks:
+      - backend
+      - frontend
+    ports:
+      - 3900:3000
+    env_file:
+     - ./docker-compose.env
+
+secrets:
+  postgres-passwd:
+    file: postgres-passwd
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
